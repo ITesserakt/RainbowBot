@@ -6,7 +6,6 @@ namespace Informatics.Scripts {
     public class BotPrefixes{
 
         private Dictionary<SocketGuild, char> prefixes = new Dictionary<SocketGuild, char>();
-        private readonly DiscordShardedClient _bot;
 
         public char Default => '/';
 

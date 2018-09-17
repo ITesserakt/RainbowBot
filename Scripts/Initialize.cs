@@ -17,12 +17,9 @@ namespace Informatics.Scripts {
             new ServiceCollection()
                 .AddSingleton(_bot)
                 .AddSingleton(_commandSvs)
-                .AddSingleton<Data>()
-                .AddSingleton<InitializeBot>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<Rainbow>()
                 .AddSingleton<UsersRoles>()
-                .AddSingleton<AdminsModule>()
                 .AddSingleton<BotPrefixes>()
                 .BuildServiceProvider();
     }

