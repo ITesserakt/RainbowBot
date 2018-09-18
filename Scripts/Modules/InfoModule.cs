@@ -65,6 +65,7 @@ namespace Informatics.Scripts.Modules {
 
         [Command("role id")]
         [RequireOwner]
+        [Summary("Используется для разработки; возвращает id указанной роли")]
         public async Task GetRoleId(IRole role) {
             await ReplyAsync($"{((SocketRole) role).Id}");
         }

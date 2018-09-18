@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Discord.Commands;
 using Discord.WebSocket;
 using Informatics.Scripts.Modules;
@@ -13,6 +14,13 @@ namespace Informatics.Scripts {
             _commandSvs = commandSvs ?? new CommandService();
         }
 
+        public void CheckSummary() =>
+            _commandSvs.Commands.Where(cmd => string.IsNullOrWhiteSpace(cmd.Summary)).ToList()
+                       .ForEach(cmd => Console.WriteLine(
+                                    $"[Warning] There is no summary for command {cmd.Name} in module {cmd.Module.Name}")
+                       );
+        
+
         public IServiceProvider BuildServiceProvider() =>
             new ServiceCollection()
                 .AddSingleton(_bot)
@@ -21,6 +29,7 @@ namespace Informatics.Scripts {
                 .AddSingleton<Rainbow>()
                 .AddSingleton<UsersRoles>()
                 .AddSingleton<BotPrefixes>()
+                .AddSingleton<InitializeBot>()
                 .BuildServiceProvider();
     }
 }

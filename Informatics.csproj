@@ -5,17 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.0.0-beta" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0-preview-20180816-01" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Modules\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Modules\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Modules\**" />
+    <PackageReference Include="log4net" Version="2.0.8" />
   </ItemGroup>
 </Project>

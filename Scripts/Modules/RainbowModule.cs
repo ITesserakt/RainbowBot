@@ -35,6 +35,7 @@ namespace Informatics.Scripts.Modules {
         }
 
         [Command("rainbow stop")]
+        [Summary("Останавливает цветное переливание роли")]
         [RequireUserPermission(GuildPermission.Administrator)]
         public Task Stop() {
             _rainbow.Stop();
