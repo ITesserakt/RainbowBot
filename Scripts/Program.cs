@@ -79,7 +79,7 @@ namespace Informatics.Scripts {
             var nick = ulong.Parse(dirtCmd[1]);
             var guild = bot.GetGuild(guildId);
             var botMaxRoleNum = guild.Users
-                                  .FirstOrDefault(user => user.Username == "SPC_Bot")
+                                  .FirstOrDefault(user => user.Username == bot.CurrentUser.Username)
                                   ?.Roles.Max(role => role.Position);//yeah, max = min
 
             Log.Info("Works good only if bot`s role is the first");

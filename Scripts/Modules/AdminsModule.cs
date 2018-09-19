@@ -64,6 +64,12 @@ namespace Informatics.Scripts.Modules {
                 await guildUser.AddRolesAsync(_usersRoles.Pop(guildUser));
             }
         }
+
+        [Command("unban")]
+        [Summary("Разбаниват пользователя")]
+        public async Task UnBan(IUser user) {
+            await Context.Guild.RemoveBanAsync(user);
+        }
     }
 
     public class UsersRoles  {
