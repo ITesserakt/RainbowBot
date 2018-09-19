@@ -3,10 +3,12 @@ using System.Linq;
 using Discord.Commands;
 using Discord.WebSocket;
 using Informatics.Scripts.Modules;
+using log4net;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Informatics.Scripts {
     public class Initialize {
+        public static readonly ILog Log = LogManager.GetLogger(typeof(Initialize));
         private readonly CommandService      _commandSvs;
         private readonly DiscordSocketClient _bot;
         public Initialize(DiscordSocketClient bot = null, CommandService commandSvs = null) {
@@ -15,9 +17,10 @@ namespace Informatics.Scripts {
         }
 
         public void CheckSummary() =>
-            _commandSvs.Commands.Where(cmd => string.IsNullOrWhiteSpace(cmd.Summary)).ToList()
-                       .ForEach(cmd => Console.WriteLine(
-                                    $"[Warning] There is no summary for command {cmd.Name} in module {cmd.Module.Name}")
+            _commandSvs.Commands
+                       .Where(cmd => string.IsNullOrWhiteSpace(cmd.Summary)).ToList()
+                       .ForEach(cmd => Log.Warn(
+                                    $"There is no summary for command '{cmd.Name}' in module '{cmd.Module.Name}'")
                        );
         
 

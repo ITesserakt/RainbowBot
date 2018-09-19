@@ -1,20 +1,34 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Layout;
+using log4net.Repository.Hierarchy;
+using log4net.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Informatics.Scripts {
     class Program {
         private static bool _isWorking = true;
+        public static readonly ILog Log = LogManager.GetLogger(typeof(Program));
 
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args) =>
             new Program().MainAsync().GetAwaiter().GetResult();
 
         private async Task MainAsync() {
+            XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetEntryAssembly()),
+                                      new FileInfo(@"C:\Users\potry\Desktop\Informatics\log_config.xml"));
+            
             var botConfig = new DiscordSocketConfig {LogLevel = LogSeverity.Info};
             var cmdConfig = new CommandServiceConfig {LogLevel = LogSeverity.Debug};
 
@@ -40,6 +54,7 @@ namespace Informatics.Scripts {
         private static async Task ReadCmdsFromConsole(IServiceProvider svc) {
             var command = await Task.Run(() => Console.ReadLine());
             var bot = svc.GetRequiredService<DiscordSocketClient>();
+            var comSvc = svc.GetRequiredService<CommandService>();
 
             switch (command) {
                 case "exit":
@@ -53,7 +68,7 @@ namespace Informatics.Scripts {
                     if (command.StartsWith("shaperize ")) {
                         await Shaperize(command, bot);
                     }
-
+                    
                     break;
             }
         }
@@ -61,22 +76,26 @@ namespace Informatics.Scripts {
         private static async Task Shaperize(string command, DiscordSocketClient bot) {
             var dirtCmd = command.Substring("shaperize ".Length).Split(' ', StringSplitOptions.RemoveEmptyEntries);
             var guildId = ulong.Parse(dirtCmd[0]);
-            var nick = dirtCmd[1];
+            var nick = ulong.Parse(dirtCmd[1]);
             var guild = bot.GetGuild(guildId);
+            var botMaxRoleNum = guild.Users
+                                  .FirstOrDefault(user => user.Username == "SPC_Bot")
+                                  ?.Roles.Max(role => role.Position);//yeah, max = min
 
-            Console.WriteLine(new LogMessage(LogSeverity.Warning, "shaperize command",
-                                             "Works good only if bot`s role is the first"));
+            Log.Info("Works good only if bot`s role is the first");
+            foreach (var role in guild.Roles) {
+                Log.Debug($"{role.Name} {role.Position}");
+            }
 
-            await guild.Users
-                       .First(user => user.Username == nick)
+            await guild.GetUser(nick)
                        .AddRoleAsync(
-                           guild.Roles.FirstOrDefault(r => r.Position == guild.Roles.Max(role => role.Position) - 1)
+                           guild.Roles.First(role => !role.IsEveryone && role.Position == botMaxRoleNum - 1)
                        );
         }
 
         private static void Status(DiscordSocketClient bot) {
-            Console.WriteLine($"Ping: {bot.Latency} ms");
-            Console.WriteLine($"Count of guilds: {bot.Guilds.Count}");
+            Log.Info($"Ping: {bot.Latency} ms");
+            Log.Info($"Count of guilds: {bot.Guilds.Count}");
         }
 
         private static async Task Exit(DiscordSocketClient bot) {

@@ -4,15 +4,18 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using log4net;
 
 namespace Informatics.Scripts {
     public class CommandHandler {
         private readonly DiscordSocketClient _bot;
-        private readonly CommandService      _command;
-        private readonly BotPrefixes         _prefixes;
-        private readonly IServiceProvider    _services;
+        private readonly CommandService _command;
+        private readonly BotPrefixes _prefixes;
+        private readonly IServiceProvider _services;
+        public static readonly ILog Log = LogManager.GetLogger(typeof(CommandHandler));
 
-        public CommandHandler(DiscordSocketClient bot, CommandService commands, IServiceProvider services, BotPrefixes prefixes) {
+        public CommandHandler(DiscordSocketClient bot, CommandService commands, IServiceProvider services,
+                              BotPrefixes prefixes) {
             _bot = bot;
             _command = commands;
             _prefixes = prefixes;
@@ -29,14 +32,14 @@ namespace Informatics.Scripts {
 
         private Task LogAsync(LogMessage log) {
             if (log.Exception is CommandException ex)
-                Console.WriteLine($"{ex.Context.User} failed to execute command '{ex.Command.Name}'\n" +
+                Log.Error($"{ex.Context.User} failed to execute command '{ex.Command.Name}'\n" +
                                   $"{ex}");
-            
+
             return Task.CompletedTask;
         }
 
         private static Task OnCommandExecutedAsync(CommandInfo command, ICommandContext context, IResult result) {
-            Console.WriteLine($"[{context.Guild.Name}] {context.User}: {context.Message.Content} -> {Success()}");
+            Log.Info($"[{context.Guild.Name}] {context.User}: {context.Message.Content} -> {Success()}");
 
             string Success() => result.IsSuccess ? "success" : "fail";
             return Task.CompletedTask;
@@ -47,7 +50,7 @@ namespace Informatics.Scripts {
 
             var argPos = 0;
             var context = new SocketCommandContext(_bot, message);
-            if(context.Guild == null ) {
+            if (context.Guild == null) {
                 return;
             }
 

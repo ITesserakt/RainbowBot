@@ -11,11 +11,11 @@ using Discord.WebSocket;
 
 namespace Informatics.Scripts.Modules {
     public class InfoModule : ModuleBase<SocketCommandContext> {
-        private readonly CommandService Cmds;
+        private readonly CommandService _cmds;
         private readonly BotPrefixes _prefixes;
 
         public InfoModule(CommandService cmds, BotPrefixes prefixes) {
-            Cmds = cmds;
+            _cmds = cmds;
             _prefixes = prefixes;
         }
 
@@ -25,18 +25,14 @@ namespace Informatics.Scripts.Modules {
         public async Task HelpAsync([Remainder] string strCmd = null) {
             if (await OnNullHelp(strCmd)) return;
 
-            Cmds.Commands
-                .Where(
-                    c => c.Name == strCmd || c.Aliases.FirstOrDefault(cmd => cmd == strCmd) != null)
-                .ToList().ForEach(async cmd => await OnHelp(cmd));
+            await OnHelp(_cmds.Commands.FirstOrDefault(c => c.Name == strCmd || c.Aliases.Contains(strCmd)));
         }
 
         private async Task OnHelp(CommandInfo command) {
             var guild = Context.Guild;
 
             if (command != null)
-                await ReplyAsync(
-                    $"**{CommandToString(command)}**\n{command.Summary}", true);
+                await ReplyAsync($"**{CommandToString(command)}**\n{command.Summary}", true);
             else
                 await ReplyAsync(
                     $"Данной команды не существует; введите **{_prefixes[guild]}help** для просмотра списка команд");
@@ -45,7 +41,7 @@ namespace Informatics.Scripts.Modules {
         private async Task<bool> OnNullHelp(string strCmd) {
             if (!string.IsNullOrWhiteSpace(strCmd)) return false;
 
-            var cmdList = Cmds.Commands.Select(CommandToString);
+            var cmdList = _cmds.Commands.Select(CommandToString);
             await ReplyAsync($"Список всех команд: \n{string.Join(",\n", cmdList)}");
             return true;
         }
@@ -61,13 +57,6 @@ namespace Informatics.Scripts.Modules {
             result.Append(")");
 
             return result.ToString();
-        }
-
-        [Command("role id")]
-        [RequireOwner]
-        [Summary("Используется для разработки; возвращает id указанной роли")]
-        public async Task GetRoleId(IRole role) {
-            await ReplyAsync($"{((SocketRole) role).Id}");
         }
     }
 }
