@@ -32,7 +32,7 @@ namespace Informatics.Scripts.Modules {
             var guild = Context.Guild;
 
             if (command != null)
-                await ReplyAsync($"**{CommandToString(command)}**\n{command.Summary}", true);
+                await ReplyAsync($"**{CommandToString(command)}**\n{command.Summary}");
             else
                 await ReplyAsync(
                     $"Данной команды не существует; введите **{_prefixes[guild]}help** для просмотра списка команд");

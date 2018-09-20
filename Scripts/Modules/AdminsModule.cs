@@ -66,7 +66,7 @@ namespace Informatics.Scripts.Modules {
         }
 
         [Command("unban")]
-        [Summary("Разбаниват пользователя")]
+        [Summary("Разбанивает пользователя")]
         public async Task UnBan(IUser user) {
             await Context.Guild.RemoveBanAsync(user);
         }

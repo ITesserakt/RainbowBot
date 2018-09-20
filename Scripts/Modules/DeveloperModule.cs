@@ -17,6 +17,7 @@ namespace Informatics.Scripts {
 					},
 					new EmbedFieldBuilder {
 						Name = "Position",
+						IsInline = true,
 						Value = role.Position
 					},
 					new EmbedFieldBuilder {
@@ -27,7 +28,7 @@ namespace Informatics.Scripts {
 					new EmbedFieldBuilder {
 						Name = "Permissions",
 						IsInline = true,
-						Value = string.Join(", ", role.Permissions)
+						Value = string.Join(", ", role.Permissions.ToList())
 					}
 				}
 			}.Build(), message: "");
