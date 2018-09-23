@@ -3,14 +3,13 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using log4net;
-using log4net.Core;
 
-namespace Informatics.Scripts {
+namespace Informatics.Scripts.Core {
     public class InitializeBot {
         public static readonly ILog Log = LogManager.GetLogger(typeof(InitializeBot));
         
         private readonly DiscordSocketClient _bot;
-        private const string Token = "NDkxOTM1NzkwMDg4MzIzMDc0.DoQQZw.sR9xOJguj-KKMoEI6Zbl-amySoM";
+        private readonly string _token = "NDgxMTY1MDA0NjEyMTczODI0.DomUPg.05y7qFmEK1GMsH_OTEwPo8L1ZFA";
 
         public InitializeBot(DiscordSocketClient bot) {
             _bot = bot;
@@ -24,7 +23,7 @@ namespace Informatics.Scripts {
             };
 
             await _bot.StartAsync();
-            await _bot.LoginAsync(TokenType.Bot, Token);
+            await _bot.LoginAsync(TokenType.Bot, _token);
         }
 
         private static Task LogAsync(LogMessage arg) {

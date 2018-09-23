@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Discord.WebSocket;
 
-namespace Informatics.Scripts {
+namespace Informatics.Scripts.Utilites {
     public class BotPrefixes{
 
         private Dictionary<SocketGuild, char> prefixes = new Dictionary<SocketGuild, char>();

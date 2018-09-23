@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Informatics.Scripts.Utilites;
 using log4net;
 
-namespace Informatics.Scripts {
+namespace Informatics.Scripts.Core {
     public class CommandHandler {
         private readonly DiscordSocketClient _bot;
         private readonly CommandService _command;

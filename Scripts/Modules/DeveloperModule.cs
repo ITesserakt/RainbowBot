@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 
-namespace Informatics.Scripts {
+namespace Informatics.Scripts.Modules {
 	public class DeveloperModule : ModuleBase<SocketCommandContext> {
 		[Command("role info")]
 		[Summary("Для разработки; выводит некоторые полезные параметры роли")]
